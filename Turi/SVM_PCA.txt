@@ -1,0 +1,90 @@
+SVM -> 101 iteracija je dala optimalno resenje
+In [8]: svm = gl.svm_classifier.create(train, target='IS_LATE', features=['DAY_OF_WEEK', 'DEPARTURE_TIME', 'TAXI_OUT', 'WHEELS_OFF', 'SCHEDULED_TIME', 'ELAPSED_TIME', 'TAXI_IN', 'ARRIVAL_TIME'], validation_set = validation, max_iterations=200)
+SVM:
+--------------------------------------------------------
+Number of examples          : 366466
+Number of classes           : 2
+Number of feature columns   : 8
+Number of unpacked features : 8
+Number of coefficients    : 9
+Starting L-BFGS
+--------------------------------------------------------
++-----------+----------+-----------+--------------+-------------------+---------------------+
+| Iteration | Passes   | Step size | Elapsed Time | Training-accuracy | Validation-accuracy |
++-----------+----------+-----------+--------------+-------------------+---------------------+
+| 1         | 4        | 0.000001  | 0.256682     | 0.798301          | 0.799050            |
+| 2         | 10       | 1.381639  | 0.691839     | 0.798301          | 0.799050            |
+| 3         | 11       | 1.381639  | 0.828202     | 0.209446          | 0.208420            |
+| 4         | 13       | 1.000000  | 1.019712     | 0.798301          | 0.799050            |
+| 5         | 14       | 1.000000  | 1.147051     | 0.798301          | 0.799050            |
+| 6         | 16       | 1.000000  | 1.334549     | 0.798301          | 0.799050            |
+| 10        | 21       | 1.000000  | 1.918101     | 0.798301          | 0.799050            |
+| 11        | 22       | 1.000000  | 2.058474     | 0.802945          | 0.803845            |
+| 15        | 27       | 1.000000  | 2.657067     | 0.802855          | 0.803978            |
+| 20        | 34       | 1.000000  | 3.605588     | 0.803223          | 0.804530            |
+| 25        | 39       | 1.000000  | 4.259328     | 0.800707          | 0.801569            |
+| 30        | 44       | 1.000000  | 4.919082     | 0.806801          | 0.807845            |
+| 35        | 49       | 1.000000  | 5.575829     | 0.814332          | 0.815956            |
+| 40        | 55       | 1.000000  | 6.290731     | 0.820900          | 0.823271            |
+| 45        | 61       | 1.000000  | 7.004629     | 0.818881          | 0.821017            |
+| 50        | 67       | 1.000000  | 7.731563     | 0.818635          | 0.820862            |
+| 51        | 68       | 1.000000  | 7.867925     | 0.818758          | 0.820928            |
+| 55        | 72       | 1.000000  | 8.408362     | 0.819110          | 0.821370            |
+| 60        | 77       | 1.000000  | 9.163371     | 0.818884          | 0.821083            |
+| 65        | 85       | 0.250000  | 10.034688    | 0.818796          | 0.821039            |
+| 70        | 90       | 0.250000  | 10.697450    | 0.818744          | 0.821039            |
+| 75        | 95       | 0.250000  | 11.353195    | 0.818791          | 0.821039            |
+| 80        | 100      | 0.250000  | 12.023978    | 0.818807          | 0.821061            |
+| 85        | 105      | 0.250000  | 12.679723    | 0.818815          | 0.821061            |
+| 90        | 112      | 1.000000  | 13.440746    | 0.818810          | 0.821061            |
+| 95        | 123      | 1.000000  | 14.476502    | 0.818804          | 0.821061            |
+| 100       | 130      | 1.000000  | 15.387925    | 0.818804          | 0.821061            |
+| 101       | 131      | 1.000000  | 15.523286    | 0.818804          | 0.821061            |
++-----------+----------+-----------+--------------+-------------------+---------------------+
+SUCCESS: Optimal solution found.
+
+predicitons = svm.classify(test)
+
+results = svm.evaluate(test)
+
+
+In [13]: results
+Out[13]:
+{'accuracy': 0.8181975362005619, 'confusion_matrix': Columns:
+        target_label    int
+        predicted_label int
+        count   int
+
+ Rows: 4
+
+ Data:
+ +--------------+-----------------+-------+
+ | target_label | predicted_label | count |
+ +--------------+-----------------+-------+
+ |      0       |        1        |   14  |
+ |      1       |        1        |  1000 |
+ |      1       |        0        |  8398 |
+ |      0       |        0        | 36858 |
+ +--------------+-----------------+-------+
+ [4 rows x 3 columns], 'f1_score': 0.1920860545524395, 'precision': 0.9861932938856016, 'recall': 0.10640561821664184}
+ 
+ //FINALNOOO
+ svm = gl.svm_classifier.create(train, target='IS_LATE', features=['DAY_OF_WEEK', 'SCHEDULED_DEPARTURE', 'ARRIVAL_TIME', 'ORIGIN_AIRPORT_LAT', 'ORIGIN_AIRPORT_LON', 'DESTINATION_AIRPORT_LAT', 'DESTINATION_AIRPORT_LON','AIRLINE_AS', 'AIRLINE_B6', 'AIRLINE_DL', 'AIRLINE_EV', 'AIRLINE_F9','AIRLINE_HA', 'AIRLINE_MQ', 'AIRLINE_NK', 'AIRLINE_OO', 'AIRLINE_UA', 'AIRLINE_US', 'AIRLINE_VX', 'AIRLINE_WN'], validation_set = validation, max_iterations=1000, penalty=100)
+ 
+ In [22]: results
+Out[22]:
+{'accuracy': 0.7951907131011609, 'confusion_matrix': Columns:
+        target_label    int
+        predicted_label int
+        count   int
+
+ Rows: 2
+
+ Data:
+ +--------------+-----------------+-------+
+ | target_label | predicted_label | count |
+ +--------------+-----------------+-------+
+ |      1       |        0        |  9386 |
+ |      0       |        0        | 36442 |
+ +--------------+-----------------+-------+
+ [2 rows x 3 columns], 'f1_score': 0.0, 'precision': None, 'recall': 0.0}

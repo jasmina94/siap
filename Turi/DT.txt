@@ -1,0 +1,83 @@
+In [7]: decisionTree = gl.decision_tree_classifier.create(train, target='IS_LATE', features=['DAY', 'DAY_OF_WEEK','AIRLINE', 'SCHEDULED_DEPARTURE', 'DEPARTURE_TIME', 'DEPARTURE_DELAY','TAXI_OUT', 'WHEELS_OFF', 'SCHEDULED_TIME', 'ELAPSED_TIME', 'AIR_TIME', 'DISTANCE', 'WHEELS_ON', 'TAXI_IN', 'SCHEDULED_ARRIVAL', 'ARRIVAL_TIME','ARRIVAL_DELAY', 'AIR_SYSTEM_DELAY', 'SECURITY_DELAY', 'AIRLINE_DELAY', 'LATE_AIRCRAFT_DELAY', 'WEATHER_DELAY', 'ORIGIN_AIRPORT_LAT', 'ORIGIN_AIRPORT_LON', 'DESTINATION_AIRPORT_LAT', 'DESTINATION_AIRPORT_LON'], validation_set=validation)
+Decision tree classifier:
+--------------------------------------------------------
+Number of examples          : 366252
+Number of classes           : 2
+Number of feature columns   : 26
+Number of unpacked features : 26
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+| Iteration | Elapsed Time | Training-accuracy | Validation-accuracy | Training-log_loss | Validation-log_loss |
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+| 1         | 0.294466     | 1.000000          | 1.000000            | 0.437493          | 0.437493            |
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+
+predictions = decisionTree.classify(test)
+
+In [11]: predictions
+Out[11]:
+Columns:
+        class   int
+        probability     float
+
+Rows: 46222
+
+Data:
++-------+----------------+
+| class |  probability   |
++-------+----------------+
+|   0   | 0.645654439926 |
+|   0   | 0.645654439926 |
+|   0   | 0.645654439926 |
+|   0   | 0.645654439926 |
+|   0   | 0.645654439926 |
+|   0   | 0.645654439926 |
+|   1   | 0.645648896694 |
+|   0   | 0.645654439926 |
+|   0   | 0.645654439926 |
+|   0   | 0.645654439926 |
++-------+----------------+
+[46222 rows x 2 columns]
+
+In [9]: results = decisionTree.evaluate(test)
+
+In [10]: results
+Out[10]:
+{'accuracy': 1.0, 'auc': 1.0, 'confusion_matrix': Columns:
+        target_label    int
+        predicted_label int
+        count   int
+
+ Rows: 2
+
+ Data:
+ +--------------+-----------------+-------+
+ | target_label | predicted_label | count |
+ +--------------+-----------------+-------+
+ |      1       |        1        |  9283 |
+ |      0       |        0        | 36939 |
+ +--------------+-----------------+-------+
+ [2 rows x 3 columns], 'f1_score': 1.0, 'log_loss': 0.4374925653031815, 'precision': 1.0, 'recall': 1.0, 'roc_curve': Columns:
+        threshold       float
+        fpr     float
+        tpr     float
+        p       int
+        n       int
+
+ Rows: 100001
+
+ Data:
+ +-----------+-----+-----+------+-------+
+ | threshold | fpr | tpr |  p   |   n   |
+ +-----------+-----+-----+------+-------+
+ |    0.0    | 1.0 | 1.0 | 9283 | 36939 |
+ |   1e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ |   2e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ |   3e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ |   4e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ |   5e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ |   6e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ |   7e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ |   8e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ |   9e-05   | 1.0 | 1.0 | 9283 | 36939 |
+ +-----------+-----+-----+------+-------+
+ [100001 rows x 5 columns]

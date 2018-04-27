@@ -6,11 +6,18 @@ import matplotlib.pyplot as plt
 import io
 import requests
 
+
+flights_path = "C:/Users/Jasmina/Desktop/data/flights.csv"
+airlines_path = "C:/Users/Jasmina/Desktop/data/airlines.csv"
+airports_path = "C:/Users/Jasmina/Desktop/data/airports.csv"
+
+
 def late_or_cancelled(x):
     if x['CANCELLED'] == 1 or x['ARRIVAL_DELAY'] > 15:
         return 1
     else:
         return 0
+
 
 def day_31_to_365(x):
     days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
@@ -21,16 +28,17 @@ def day_31_to_365(x):
 def load_data():
     n = 5819078                                     # total number of datapoints = 5819078
     skip = random.sample(range(1, n), n - 20000)    # skip = sorted(random.sample(range(1,n),n-2000))
-    flights = pd.read_csv('data/flights.csv', skiprows=skip,
+    flights = pd.read_csv(flights_path, skiprows=skip,
                           usecols=['MONTH', 'DAY', 'DAY_OF_WEEK', 'AIRLINE', 'ORIGIN_AIRPORT', 'DESTINATION_AIRPORT',
                                    'SCHEDULED_DEPARTURE','DEPARTURE_DELAY', 'ARRIVAL_DELAY', 'CANCELLED'], low_memory=False)
-    airports = pd.read_csv('data/airports.csv')
-    airlines = pd.read_csv('data/airlines.csv')
+    airports = pd.read_csv(airlines_path)
+    airlines = pd.read_csv(airlines_path)
     flights = flights.sample(frac=1).reset_index(
         drop=True)                      # here I randomize rows so that data is not chronologically sorted
 
     all_features = flights.columns.values
     return flights, airports, airlines, all_features
+
 
 def make_aircode_dict():
     url1 = "https://www.transtats.bts.gov/Download_Lookup.asp?Lookup=L_AIRPORT"
@@ -49,6 +57,7 @@ def make_aircode_dict():
 
     return aircode_dict
 
+
 def change_airport_codes(data, aircode_dict):
     for i in range(len(data)):
         if len(data['ORIGIN_AIRPORT'][i]) != 3:
@@ -62,6 +71,7 @@ def change_airport_codes(data, aircode_dict):
             data = data.replace(to_replace, value)
 
     return data
+
 
 if __name__ == "__main__":
     flights, airports, airlines, all_features = load_data()

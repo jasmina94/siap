@@ -1,0 +1,31 @@
+klastering_model = gl.kmeans.create(data, num_clusters=2, features=['DAY', 'DAY_OF_WEEK','AIRLINE', 'ORIGIN_AIRPORT',
+'DESTINATION_AIRPORT','SCHEDULED_DEPARTURE', 'DEPARTURE_TIME', 'WHEELS_OFF', 'TAXI_OUT'],label=None, initial_centers=None, max_iterations=10, batch_size=None, verbose=True)
+
+WARNING:root:Feature 'ORIGIN_AIRPORT' excluded because of its type. Kmeans features must be int, float, dict, or array.array type.
+WARNING:root:Feature 'DESTINATION_AIRPORT' excluded because of its type. Kmeans features must be int, float, dict, or array.array type.
+WARNING:root:Feature 'AIRLINE' excluded because of its type. Kmeans features must be int, float, dict, or array.array type.
+Batch size is larger than the input dataset. Switching to an exact Kmeans method.
+Choosing initial cluster centers with Kmeans++.
++---------------+-----------+
+| Center number | Row index |
++---------------+-----------+
+| 0             | 53092     |
+| 1             | 315945    |
++---------------+-----------+
+Starting kmeans model training.
+Assigning points to initial cluster centers.
++-----------+-------------------------------+
+| Iteration | Number of changed assignments |
++-----------+-------------------------------+
+| 1         | 32370                         |
+| 2         | 14159                         |
+| 3         | 6714                          |
+| 4         | 5279                          |
+| 5         | 4105                          |
+| 6         | 3073                          |
+| 7         | 2085                          |
+| 8         | 1337                          |
+| 9         | 570                           |
+| 10        | 167                           |
++-----------+-------------------------------+
+WARNING: Clustering did not converge within max_iterations.

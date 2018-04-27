@@ -1,0 +1,97 @@
+url = "C:\\Users\\Jasmina\\Documents\\Faks\\SIAP\\avioni\\flight-delays\\january2.csv"  //january2 fajl dobijen selekcijom u rapidmineru
+
+data = gl.SFrame.read_csv(url)
+
+data['LATE'] = data['DEPARTURE_DELAY'] > 15
+
+train, test = data.random_split(0.8)
+
+model = gl.random_forest_classifier.create(train, target='late', features=['DAY', 'DAY_OF_WEEK','AIRLINE', 'ORIGIN_AIRPORT','DESTINATION_AIRPORT', 
+ 'SCHEDULED_DEPARTURE', 'DEPARTURE_TIME', 'WHEELS_OFF', 'TAXI_OUT'], max_iterations=10, validation_set='auto')
+ 
+predictions = model.classify(test)
+
+results = model.evaluate(test)
+
+
+predictions
+Columns:
+        class   int
+        probability     float
+
+Rows: 91748
+
+Data:
++-------+----------------+
+| class |  probability   |
++-------+----------------+
+|   0   | 0.755860894918 |
+|   0   | 0.755860894918 |
+|   0   | 0.755860894918 |
+|   0   | 0.787741646171 |
+|   0   | 0.755860894918 |
+|   0   | 0.755860894918 |
+|   0   | 0.755860894918 |
+|   0   | 0.794253855944 |
+|   0   | 0.755860894918 |
+|   0   | 0.755860894918 |
++-------+----------------+
+[91748 rows x 2 columns]
+Note: Only the head of the SFrame is printed.
+You can use print_rows(num_rows=m, num_columns=n) to print more rows and columns.
+
+results
+
+{'accuracy': 0.8564328377730305,
+ 'auc': 0.8741494581236081,
+ 'confusion_matrix': Columns:
+        target_label    int
+        predicted_label int
+        count   int
+
+ Rows: 4
+
+ Data:
+ +--------------+-----------------+-------+
+ | target_label | predicted_label | count |
+ +--------------+-----------------+-------+
+ |      0       |        1        |   94  |
+ |      1       |        1        |  4539 |
+ |      1       |        0        | 13078 |
+ |      0       |        0        | 74037 |
+ +--------------+-----------------+-------+
+ [4 rows x 3 columns],
+ 'f1_score': 0.408,
+ 'log_loss': 0.3788026295242206,
+ 'precision': 0.979710770559033,
+ 'recall': 0.2576488618947607,
+ 'roc_curve': Columns:
+        threshold       float
+        fpr     float
+        tpr     float
+        p       int
+        n       int
+
+ Rows: 100001
+
+ Data:
+ +-----------+-----+-----+-------+-------+
+ | threshold | fpr | tpr |   p   |   n   |
+ +-----------+-----+-----+-------+-------+
+ |    0.0    | 1.0 | 1.0 | 17617 | 74131 |
+ |   1e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ |   2e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ |   3e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ |   4e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ |   5e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ |   6e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ |   7e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ |   8e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ |   9e-05   | 1.0 | 1.0 | 17617 | 74131 |
+ +-----------+-----+-----+-------+-------+
+ [100001 rows x 5 columns]
+ Note: Only the head of the SFrame is printed.
+ You can use print_rows(num_rows=m, num_columns=n) to print more rows and columns.}
+ 
+ 
+ 

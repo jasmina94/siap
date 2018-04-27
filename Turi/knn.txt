@@ -1,0 +1,148 @@
+ model = gl.classifier.create(data, target='IS_LATE', features_all=['DAY', 'DAY_OF_WEEK','AIRLINE', 'SCHEDULED_DEPARTURE', 'DEPARTURE_TIME', 'DEPARTURE_DELAY','TAXI_OUT', 'WHEELS_OFF', 'SCHEDULED_TIME', 'ELAPSED_TIME', 'AIR_TIME', 'DISTANCE', 'WHEELS_ON', 'TAXI_IN', 'SCHEDULED_ARRIVAL', 'ARRIVAL_TIME','ARRIVAL_DELAY', 'AIR_SYSTEM_DELAY', 'SECURITY_DELAY', 'AIRLINE_DELAY', 'LATE_AIRCRAFT_DELAY', 'WEATHER_DELAY', 'ORIGIN_AIRPORT_LAT', 'ORIGIN_AIRPORT_LON', 'DESTINATION_AIRPORT_LAT', 'DESTINATION_AIRPORT_LON'])
+ pca_attr = ['DAY_OF_WEEK', 'DEPARTURE_TIME', 'TAXI_OUT', 'WHEELS_OFF', 'SCHEDULED_TIME', 'ELAPSED_TIME', 'TAXI_IN', 'ARRIVAL_TIME']
+ 
+ 
+ //Januar ipython
+In [3]: url = "C:\\Users\\Jasmina\\Desktop\\classification\\january.csv"
+
+In [4]: january = gl.SFrame.read_csv(url)
+In [5]: train_jan, test_jan = january.random_split(0.8)
+
+In [6]: test_jan, validation_jan = te
+Templates/ test.txt   test_jan
+
+In [6]: test_jan, validation_jan = test_jan.random_split(0.5)
+In [10]: train_jan.num_rows()
+Out[10]: 366708
+
+In [11]: test_jan.num_rows()
+Out[11]: 45583
+
+In [12]: validation_jan.num_rows()
+Out[12]: 45695
+
+//PCA
+
+In [21]: train_jan_pca, test_jan_pca = pca_jan.random_split(0.8)
+
+In [22]: test_jan_pca, validation_jan_pca = test_jan_pca.random_split(0.5)
+
+
+In [23]: knnModel = gl.nearest_neighbor_classifier.create(train_jan_pca, target='IS_LATE', features=['DAY_OF_WEEK', 'DEPARTURE_TIME', 'TAXI_OUT', 'WHEELS_OFF', 'SCHEDULED_TIME', 'ELAPSED_TIME', 'TAXI_IN', 'ARRIVAL_TIME'], distance='euclidean')
+Starting ball tree nearest neighbors model training.
++------------+--------------+
+| Tree level | Elapsed Time |
++------------+--------------+
+| 0          | 168.45ms     |
+| 1          | 317.373ms    |
+| 2          | 452.421ms    |
+| 3          | 621.556ms    |
+| 4          | 755.768ms    |
+| 5          | 902.279ms    |
+| 6          | 1.04s        |
+| 7          | 1.21s        |
+| 8          | 1.36s        |
+| 9          | 1.45s        |
++------------+--------------+
+
+***************************************************************************
+predictions = knnModel.classify(test_jan_pca)   obucavanje
+results = knnModel.evaluate(validation_jan_pca) evaluacija
+****************************************************************************
+
+In [29]: predictions - za pca januar
+Out[29]:
+Columns:
+        class   int
+        probability     float
+
+Rows: 45781
+
+Data:
++-------+-------------+
+| class | probability |
++-------+-------------+
+|   0   |     1.0     |
+|   0   |     1.0     |
+|   0   |     0.8     |
+|   0   |     0.9     |
+|   0   |     1.0     |
+|   0   |     1.0     |
+|   0   |     1.0     |
+|   0   |     1.0     |
+|   0   |     1.0     |
+|   0   |     0.9     |
++-------+-------------+
+[45781 rows x 2 columns]
+Note: Only the head of the SFrame is printed.
+You can use print_rows(num_rows=m, num_columns=n) to print more rows and columns.
+
+In [30]: results
+Out[30]:
+{'accuracy': 0.8288879770209274, 'confusion_matrix': Columns:
+        target_label    int
+        predicted_label int
+        count   int
+
+ Rows: 4
+
+ Data:
+ +--------------+-----------------+-------+
+ | target_label | predicted_label | count |
+ +--------------+-----------------+-------+
+ |      0       |        0        | 35862 |
+ |      0       |        1        |  904  |
+ |      1       |        1        |  2518 |
+ |      1       |        0        |  7019 |
+ +--------------+-----------------+-------+
+ [4 rows x 3 columns], 'roc_curve': Columns:
+        threshold       float
+        fpr     float
+        tpr     float
+        p       int
+        n       int
+
+ Rows: 100001
+
+ Data:
+ +-----------+-----+-----+------+-------+
+ | threshold | fpr | tpr |  p   |   n   |
+ +-----------+-----+-----+------+-------+
+ |    0.0    | 1.0 | 1.0 | 9537 | 36766 |
+ |   1e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ |   2e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ |   3e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ |   4e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ |   5e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ |   6e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ |   7e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ |   8e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ |   9e-05   | 1.0 | 1.0 | 9537 | 36766 |
+ +-----------+-----+-----+------+-------+
+ [100001 rows x 5 columns]
+ Note: Only the head of the SFrame is printed.
+ You can use print_rows(num_rows=m, num_columns=n) to print more rows and columns.}
+ 
+ In [42]: targets_real = validation_jan_pca['IS_LATE']
+ In [45]: targets_real = targets_real[:45781]
+
+In [48]: pr_score   = gl.evaluation.precision(targets_real, predictions['class'])
+
+In [49]: pr_score
+Out[49]: 0.259945338597024
+
+In [50]: recall_score   = gl.evaluation.recall(targets_real, predictions['class'])
+
+In [51]: rec
+Recent/      %recall      recall_score
+
+In [51]: recall_score
+Out[51]: 0.09041935143128763
+
+In [52]: f1_score   = gl.evaluation.f1_score(targets_real, predictions['class'])
+
+In [53]: f1_score
+Out[53]: 0.1341692789968652
+
+
+

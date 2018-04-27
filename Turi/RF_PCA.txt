@@ -1,0 +1,143 @@
+Random Forest
+
+features=['DAY_OF_WEEK', 'SCHEDULED_DEPARTURE', 'ARRIVAL_TIME', 'ORIGIN_AIRPORT_LAT', 'ORIGIN_AIRPORT_LON', 'DESTINATION_AIRPORT_LAT', 'DESTINATION_AIRPORT_LON','AIRLINE_AS', 'AIRLINE_B6', 'AIRLINE_DL', 'AIRLINE_EV', 'AIRLINE_F9','AIRLINE_HA', 'AIRLINE_MQ', 'AIRLINE_NK', 'AIRLINE_OO', 'AIRLINE_UA', 'AIRLINE_US', 'AIRLINE_VX', 'AIRLINE_WN'] 
+//Za pca novi featurs
+
+In [4]: url = "C:\\Users\\Jasmina\\Desktop\\data\\january_pca.csv"
+
+In [5]: january = gl.SFrame.read_csv(url)
+
+In [7]: train, test = january.random_split(0.8)
+
+In [8]: test, validation = test.random_split(0.5)
+
+randomForest = gl.random_forest_classifier.create(train, target='IS_LATE', validation_set=validation, features=['DAY_OF_WEEK', 'DEPARTURE_TIME', 'TAXI_OUT', 'WHEELS_OFF', 'SCHEDULED_TIME', 'ELAPSED_TIME', 'TAXI_IN', 'ARRIVAL_TIME'])
+Random forest classifier:
+--------------------------------------------------------
+Number of examples          : 366611
+Number of classes           : 2
+Number of feature columns   : 8
+Number of unpacked features : 8
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+| Iteration | Elapsed Time | Training-accuracy | Validation-accuracy | Training-log_loss | Validation-log_loss |
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+| 1         | 0.327223     | 0.824994          | 0.823565            | 0.445778          | 0.447801            |
+| 2         | 0.599923     | 0.823530          | 0.822734            | 0.446466          | 0.448170            |
+| 3         | 0.860617     | 0.825063          | 0.824178            | 0.445304          | 0.447240            |
+| 4         | 1.161417     | 0.824934          | 0.824025            | 0.446967          | 0.448691            |
+| 5         | 1.467231     | 0.823508          | 0.822844            | 0.449478          | 0.451050            |
+| 6         | 1.792094     | 0.824588          | 0.823412            | 0.448037          | 0.449706            |
+| 10        | 2.818824     | 0.825243          | 0.824025            | 0.447498          | 0.449181            |
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+
+In [11]: predicitons = randomForest.classify(test)
+
+In [12]: results = randomForest.evaluate(test)
+
+In [15]: predicitons
+Out[15]:
+Columns:
+        class   int
+        probability     float
+
+Rows: 45647
+
+Data:
++-------+----------------+
+| class |  probability   |
++-------+----------------+
+|   0   | 0.808324351907 |
+|   0   | 0.758576720953 |
+|   0   | 0.758576720953 |
+|   0   | 0.791319787502 |
+|   0   | 0.735773235559 |
+|   0   | 0.854966536164 |
+|   0   | 0.860230147839 |
+|   0   | 0.80092689395  |
+|   0   | 0.854966536164 |
+|   0   | 0.860230147839 |
++-------+----------------+
+
+In [16]: results
+Out[16]:
+{'accuracy': 0.8246982277039017,
+ 'auc': 0.7364194962923899,
+ 'confusion_matrix': Columns:
+        target_label    int
+        predicted_label int
+        count   int
+
+ Rows: 4
+
+ Data:
+ +--------------+-----------------+-------+
+ | target_label | predicted_label | count |
+ +--------------+-----------------+-------+
+ |      0       |        1        |  367  |
+ |      1       |        1        |  1553 |
+ |      1       |        0        |  7635 |
+ |      0       |        0        | 36092 |
+ +--------------+-----------------+-------+
+ [4 rows x 3 columns],
+ 'f1_score': 0.2796182931220742,
+ 'log_loss': 0.4481825628867231,
+ 'precision': 0.8088541666666667,
+ 'recall': 0.16902481497605573,
+ 'roc_curve': Columns:
+        threshold       float
+        fpr     float
+        tpr     float
+        p       int
+        n       int
+
+ Rows: 100001
+
+ Data:
+ +-----------+-----+-----+------+-------+
+ | threshold | fpr | tpr |  p   |   n   |
+ +-----------+-----+-----+------+-------+
+ |    0.0    | 1.0 | 1.0 | 9188 | 36459 |
+ |   1e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ |   2e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ |   3e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ |   4e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ |   5e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ |   6e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ |   7e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ |   8e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ |   9e-05   | 1.0 | 1.0 | 9188 | 36459 |
+ +-----------+-----+-----+------+-------+
+ [100001 rows x 5 columns]
+ 
+ 
+ Pravi PCA
+ 
+ {'accuracy': 0.8068157104954112,
+ 'auc': 0.7140999808734678,
+ 'confusion_matrix': Columns:
+        target_label    int
+        predicted_label int
+        count   int
+
+ Rows: 4
+
+ Data:
+ +--------------+-----------------+-------+
+ | target_label | predicted_label | count |
+ +--------------+-----------------+-------+
+ |      0       |        1        |   42  |
+ |      1       |        1        |  392  |
+ |      1       |        0        |  8841 |
+ |      0       |        0        | 36707 |
+ +--------------+-----------------+-------+
+ [4 rows x 3 columns],
+ 'f1_score': 0.08110065170166546,
+ 'log_loss': 0.4688345574900922,
+ 'precision': 0.9032258064516129,
+ 'recall': 0.04245640636846096,
+ 'roc_curve': Columns:
+        threshold       float
+        fpr     float
+        tpr     float
+        p       int
+        n       int

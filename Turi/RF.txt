@@ -1,0 +1,90 @@
+In [10]: randomForest = gl.random_forest_classifier.create(train, target='IS_LATE', validation_set=validation, features=['DAY', 'DAY_OF_WEEK','AIRLINE', 'SCHEDULED_DEPARTURE', 'DEPARTURE_TIME', 'DEPARTURE_DELAY','TAXI_OUT', 'WHEELS_OFF', 'SCHEDULED_TIME', 'ELAPSED_TIME', 'AIR_TIME', 'DISTANCE', 'WHEELS_ON', 'TAXI_IN', 'SCHEDULED_ARRIVAL', 'ARRIVAL_TIME','ARRIVAL_DELAY', 'AIR_SYSTEM_DELAY', 'SECURITY_DELAY', 'AIRLINE_DELAY', 'LATE_AIRCRAFT_DELAY', 'WEATHER_DELAY', 'ORIGIN_AIRPORT_LAT', 'ORIGIN_AIRPORT_LON', 'DESTINATION_AIRPORT_LAT', 'DESTINATION_AIRPORT_LON'])
+Random forest classifier:
+--------------------------------------------------------
+Number of examples          : 366650
+Number of classes           : 2
+Number of feature columns   : 26
+Number of unpacked features : 26
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+| Iteration | Elapsed Time | Training-accuracy | Validation-accuracy | Training-log_loss | Validation-log_loss |
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+| 1         | 0.252671     | 1.000000          | 1.000000            | 0.126934          | 0.126934            |
+| 2         | 0.491306     | 1.000000          | 1.000000            | 0.126934          | 0.126934            |
+| 3         | 0.702869     | 1.000000          | 1.000000            | 0.126934          | 0.126934            |
+| 4         | 0.930474     | 1.000000          | 1.000000            | 0.126934          | 0.126934            |
+| 5         | 1.148053     | 1.000000          | 1.000000            | 0.126934          | 0.126934            |
+| 6         | 1.376661     | 1.000000          | 1.000000            | 0.126934          | 0.126934            |
+| 10        | 2.891690     | 1.000000          | 1.000000            | 0.129262          | 0.129223            |
++-----------+--------------+-------------------+---------------------+-------------------+---------------------+
+
+predicitons = randomForest.classify(test)
+
+results = randomForest.evaluate(test)
+
+In [14]: predicitons
+Out[14]:
+Columns:
+        class   int
+        probability     float
+
+Rows: 45564
+
+Data:
++-------+----------------+
+| class |  probability   |
++-------+----------------+
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
+|   0   | 0.880775310099 |
++-------+----------------+
+[45564 rows x 2 columns]
+
+
+In [13]: results
+Out[13]:
+{'accuracy': 1.0, 'auc': 1.0000000000000002, 'confusion_matrix': Columns:
+        target_label    int
+        predicted_label int
+        count   int
+
+ Rows: 2
+
+ Data:
+ +--------------+-----------------+-------+
+ | target_label | predicted_label | count |
+ +--------------+-----------------+-------+
+ |      1       |        1        |  9178 |
+ |      0       |        0        | 36386 |
+ +--------------+-----------------+-------+
+ [2 rows x 3 columns], 'f1_score': 1.0, 'log_loss': 0.12933354728029198, 'precision': 1.0, 'recall': 1.0, 'roc_curve': Columns:
+        threshold       float
+        fpr     float
+        tpr     float
+        p       int
+        n       int
+
+ Rows: 100001
+
+ Data:
+ +-----------+-----+-----+------+-------+
+ | threshold | fpr | tpr |  p   |   n   |
+ +-----------+-----+-----+------+-------+
+ |    0.0    | 1.0 | 1.0 | 9178 | 36386 |
+ |   1e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ |   2e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ |   3e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ |   4e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ |   5e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ |   6e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ |   7e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ |   8e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ |   9e-05   | 1.0 | 1.0 | 9178 | 36386 |
+ +-----------+-----+-----+------+-------+
+ [100001 rows x 5 columns]
